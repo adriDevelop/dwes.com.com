@@ -193,6 +193,112 @@
           echo "El \$numero6 es $numero6 y su tipo es " . gettype($numero6) . "<br>";
           ?>
 
+          <h2>Operadores de asignación aumentada</h2>
+          <?php
+          /* Operadores de asignación aumentada
+          ++ Incremento
+          -- Decremento
+          +=
+          -=
+          *=
+          /=
+          %=
+          */
 
+          $numero = 4;
+          $numero++;  // Equivalente a $numero = $numero + 1;
+          echo "Antes número era 4 ahora es $numero<br>";
+          ++$numero;
+          echo "Antes número era 5 ahora es $numero<br>";
+
+          $numero = 10;
+          $resultado = $numero++ * 2; // Equivale a $resultado= $numero * 2; $numero = $numero +1;
+          echo "El resultado es $resultado y el número es $numero<br>";
+
+          $numero = 10;
+          $resultado = ++$numero * 2; // Equivale a $numero = $numero +1; resultado = $numero * 2;
+          echo "El resultado es $resultado y el número es $numero<br>";
+
+          $numero+=5; // Equivale a $numero = $numero + 5;
+          echo "El número es $numero<br>";
+          $numero-=3; // Equivale a $numero = $numero - 3;
+          echo "El número es $numero<br>";
+          $numero*=3; // Equivale a $numero = $numero * 3;
+          echo "El número es $numero<br>";
+          $numero%=7; // Equivale a $numero = $numero % 7;
+          echo "El número es $numero<br>";
+          $numero/=5; // Equivale a $numero = $numero / 5;
+          echo "El número es $numero<br>";
+
+          ?>
+          <h2>Operadores relacionales</h2>
+          <?php
+            /*
+              == Igual a
+              === Idéntico a
+              != Distinto
+              !== Distinto valor o distinto tipo
+              > Mayor que
+              < Menor que
+              >= Mayor o igual que
+              <= Menor o igual que
+              <=> Nave espacial
+            */
+            $n1 = 5;
+            $cadena = "5";
+            $n2 = 8;
+
+            $resultado = $n1 == $n2;
+            echo "Es n1 igual que n2: " . (int)$resultado . "<br>";
+            $resultado = $n1 == $cadena;
+            echo "Es n1 igual que cadena: " . (int)$resultado . "<br>";
+            $resultado = $n1 === $cadena;
+            echo "Es n1 idéntico que cadena: " . (int)$resultado . "<br>";
+
+            $resultado = $n1 != $n2;
+            echo "Es n1 distinto de n2: " . (int)$resultado . "<br>";
+
+            $resultado = $n1 != $cadena;
+            echo "Es n1 distinto que cadena: " . (int)$resultado . "<br>";
+            $resultado = $n1 !== $cadena;
+            echo "Es n1 distinto que cadena: " . (int)$resultado . "<br>";
+
+            $resultado = $n1 <=> $n2;
+            echo "Es n1 menor, igual o mayor que n2: " . (int)$resultado . "<br>";
+
+            $nombre1 = "Zacarias";
+            $nombre2 = "adela";
+            $resultado = $nombre1 > $nombre2;
+            echo "Es nombre1 mayor que nombre2: " . (int)$resultado;
+
+            
+          ?>
+
+<h2>Operadores lógicos</h2>
+          <?php
+            // AND lógico o conjunción lógica
+            // OR Or lógico o disyunción lógica
+            // XOR Or exclusivo
+            // ! Not
+            // && And lógico
+            // || Or lógico
+
+            $n1 = 9;
+            $n2 = 5;
+            $n3 = 10;
+            $resultado = $n1 == $n2 OR $n2 > $n3;
+            $resultado = $n1 == $n2 AND $n2 < $n3;
+
+            echo "El resultado es: " . (int)$resultado . "<br>";
+
+            $resultado = $n1 == 9 OR $n2 < $n1 AND $n3 > 10;
+            echo "El resultado es: " . (int)$resultado . "<br>";
+
+            $resultado = $n1 == 9 || $n2 < $n1 AND $n3 > 10;
+            echo "El resultado es: " . (int)$resultado . "<br>";
+
+            $resultado = $n1 + 5 / $n3 < $n1 ** 3 AND $n3 /5 + $n2 * 2 >= $n1 * $n2 / $n3 OR $n1 - 3 % 2 == $n3 - 7;
+            
+          ?>
     </body>
 </html>
