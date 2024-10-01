@@ -6,6 +6,7 @@
         <title>Tipos de datos</title>
     </head>
     <body>
+
         <h1>Variables: 03variables</h1>
         <?php
         // Las variables se definen con $identificador
@@ -100,6 +101,7 @@
         
 
         ?>
+
         <h2>Constantes</h2>
         <p>Una constante es un valor con nombre que no puede cambiar de valor en el programa, se le asigna un valor en la declaracióny permanece invariable.
             Se definen de dos formas:<br>
@@ -143,6 +145,7 @@
           conveniencia.
         </p>
         <h2>Operadores</h2>
+
         <h3>Asignación</h3>
         <?php
           // El operador de asignación es = 
@@ -152,6 +155,7 @@
 
 
         ?>
+
         <h3>Operadores aritméticos</h3>
         <?php
           /*
@@ -231,6 +235,7 @@
           echo "El número es $numero<br>";
 
           ?>
+
           <h2>Operadores relacionales</h2>
           <?php
             /*
@@ -274,7 +279,7 @@
             
           ?>
 
-<h2>Operadores lógicos</h2>
+          <h2>Operadores lógicos</h2>
           <?php
             // AND lógico o conjunción lógica
             // OR Or lógico o disyunción lógica
@@ -298,6 +303,22 @@
             echo "El resultado es: " . (int)$resultado . "<br>";
 
             $resultado = $n1 + 5 / $n3 < $n1 ** 3 AND $n3 /5 + $n2 * 2 >= $n1 * $n2 / $n3 OR $n1 - 3 % 2 == $n3 - 7;
+
+            
+          ?>
+
+          <h2>Estructuras de control anidadas/compuestas</h2>
+          <?php
+            $n1 = 9;
+            $n2 = 5;
+            $n3 = 10;
+            if ( ($n1 == 9 OR $n2 < $n1) AND $n3 >10) {
+              echo "El resultado global es True<br>";
+            } else {
+              echo "El resultado global es False<br>";
+            }
+
+            if ( $edad > 18 AND $edad < 65)
             
           ?>
     </body>
