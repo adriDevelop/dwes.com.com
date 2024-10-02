@@ -318,8 +318,108 @@
               echo "El resultado global es False<br>";
             }
 
-            if ( $edad > 18 AND $edad < 65)
+            $nota = 4;
+
+            if ( $nota >= 0 || $nota > 5 ){
+              echo "Suspenso";
+            } elseif ( $nota < 6 ) {
+              echo "Aprobado";
+            } elseif ( $nota < 7 ) {
+              echo "Bien";
+            } elseif ( $nota < 9 ){
+              echo "Notable";
+            } elseif ( $nota <= 10 ){
+              echo "Sobresaliente";
+            } else{
+              echo "La nota no es correcta";
+            }
+            echo "<br>";
+
+            // Estructura condicional múltiples switch
+            $nota = 7;
+            switch( $nota ){
+              case 1: 
+              case 2: 
+              case 3: 
+              case 4: {
+                echo "Suspenso";
+                break;
+              }
+              case 5: 
+              case 6: 
+              case 7: 
+              case 8: 
+              case 9: 
+              case 10:{
+                echo "Aprobado";
+                break;
+              }
+              default:{
+                echo "Nota no válida";
+              }
+            }
+
+            echo "<br>";
+
+            // Expresión match
+            $calificacion = match ($nota) {
+              0,1,2,3,4 => "Suspenso",
+              5         => "Aprobado",
+              6         => "Bien",
+              7,8       => "Notable",
+              9, 10     => "Sobresaliente",
+              default   => "Nota errónea"
+            };
+
+            echo "Con tu nota $nota, tienes una calificación $calificacion";
+            echo "<br>";
             
+          ?>
+
+          <h2>Operador ternario</h2>
+          <?php
+            // Sintaxis:
+            // <condición> ? <expresión_true> : <expresión_false>;
+
+            $nota = 6;
+            $resultado = $nota >= 5 ? "Estás aprobado" : "Estás suspenso";
+            echo "$resultado <br>";
+          ?>
+
+          <h2>Bucles</h2>
+          <ul>
+            <li>For con contador (estilo Java y C++)</li>
+            <li>For para colecciones de datos</li>
+            <li>While</li>
+            <li>Do...while</li>
+            <li>Sentencias break y continue</li>
+          <ul>
+          <h3>Bucle for con contadores (estilo Java y C++)</h3>
+          <?php
+          $numero = 4;
+            for ($contador = 0; $contador < 10; $contador++){
+              echo "Número: $numero * $contador = " . $numero*$contador . "<br>";
+            }
+            $contador = 0;
+          ?>
+          <h3>Bucle for para colecciones de datos</h3>
+          <?php
+          ?>
+          <h3>While</h3>
+          <?php
+            while($contador < 10){
+              echo "Número: $numero * $contador = " . $numero*$contador . "<br>";;
+              $contador++;
+            }
+            $contador = 0;
+          ?>
+          <h3>Do...while</h3>
+          <?php
+            do{
+              echo "Número: $numero * $contador = " . $numero*$contador . "<br>";
+              $contador++;
+            }while($contador < 10);
+            $contador = 0;
           ?>
     </body>
 </html>
