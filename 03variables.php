@@ -421,5 +421,44 @@
             }while($contador < 10);
             $contador = 0;
           ?>
+
+          <?php
+            // Generar 200 números aleatorios entre 1 y 1000.
+            // Por cada número se comprueba cuántos números primos
+            // hay desde 1 hasta ese número.
+            // Si hay más de 10 números primos que termine.
+            // Al final visuallizar cada número generado y los primos haste ese número.
+
+            for ($i = 0; i < 200; $i++){
+              $numero_random = rand(1, 1000);
+              echo "El número generado es: $numero_random <br>";
+              for ($j = 1; $j < $numero_random; $j++){
+                // Averiguar si $j es primo.
+                $es_primo = true;
+                $raiz_cuadrada = sqrt($j);
+                $k = 2;
+                while($es_primo && $k < $raiz_cuadrada){
+                  if ($j % $k == 0) $es_primo = false;
+                  $k++;
+                }
+                if ($es_primo){
+                  
+                }
+              }
+            }
+          ?>
+
+          <h3>Sintaxis alternativa a la estructuras de control</h3>
+          <?php
+          $numero = rand(1,100);
+          if( $numero % 2 == 0 ):
+              echo "El número $numero es par<br>";
+          else:
+              echo "El número $numero es impar<br>";
+          endif;
+
+        
+          ?>
+
     </body>
 </html>
