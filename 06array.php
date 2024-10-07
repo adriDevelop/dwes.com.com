@@ -57,7 +57,67 @@
   <p>Arrays con dos dimensiones y por tanto para acceder a un elemento hacen fala dos claves</p>
 
   <?php
-    $notas = Array();
+    $notas = Array(
+      Array(3.5, 6, 8, 9.5, 3),
+      Array(2, 5.5, 6, 2, 10),
+      Array(4.5, 3, 2.5, 7, 8),
+      Array(7, 1, 0, 1.5, 3.5)
+    );
+
+    echo "El elemento en la fila 2 columna 3 es {$notas[1][2]}<br>";
+
+    $notas[][] = 9;
+
+    echo "El elemento en la fila 4 columna 0 es {$notas[4][0]}<br>";
+
+    $notas[3][] = 7.5;
+
+    echo "El elemento en la fila 3 cuarta es {$notas[3][5]}<br>";
+
+    // Array asociativo bidimensional.
+    $coches = [
+      '1234bbc' => ['marca' => 'Seat', 'modelo' => 'Ibiza', 'motor' => 'Diesel', 'pvp' => 10000],
+      '4321ccb' => ['marca' => 'Ford', 'modelo' => 'Focus', 'motor' => 'Gasolina', 'pvp' => 21000]
+    ];
+
+    echo "El primer coche es {$coches['1234bbc']['marca']} modelo {$coches['1234bbc']['modelo']}<br>";
+
+
+    // Crea un array de un equipo de fútbol donde cada fila son las posiciones donde juegan los 
+    // jugadores con el conjunto de jugadores identificados por su dorsal.
+    $equipo = [
+      'Porteros' => [
+        'P1' => ['nombre' => 'Ter Stegen', 'dorsal' => 1],
+        'P2' => ['nombre' => 'Iñaki Penya', 'dorsal' => 13],
+      ],
+      'Defensas' => [
+        'D1' => ['nombre' => 'Cubarsí', 'dorsal' => 2],
+        'D2' => ['nombre' => 'Balde', 'dorsal' => 3],
+        'D3' => ['nombre' => 'Araujo', 'dorsal' => 4],
+        'D4' => ['nombre' => 'Iñigo Martínez', 'dorsal' => 5],
+        'D5' => ['nombre' => 'Crhistensen', 'dorsal' => 15],
+        'D6' => ['nombre' => 'Jules Kounde', 'dorsal' => 23],
+        'D2' => ['nombre' => 'Eric García', 'dorsal' => 24],
+      ]
+    ];
+
+    foreach ($equipo as $jugadores => $valor){
+      echo "<h2> $jugadores </h2>";
+      foreach ($valor as $posicion => $jugador){
+        foreach ($jugador as $futbolista => $player){
+          echo "El $futbolista: $player<br>";
+        }
+      }
+    }
+    
+
+    /*
+    for ($i < 0; $i < count(equipo); $i++){
+
+    }
+    */
+
+
   ?>
 </body>
 </html>
