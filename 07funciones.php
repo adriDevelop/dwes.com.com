@@ -52,6 +52,60 @@ function area_triangulo2($base, $altura){
   return $area;
 }
 
+function area_rectangulo(float $base, float $altura) {
+  return $base * $altura;
+}
+
+function media_aritmetica(...$numeros){
+  $suma = 0;
+  foreach( $numeros as $numero ){
+    $suma += $numero;
+  }
+
+  return $suma / count($numeros);
+}
+
+function circulo_y_circunferencia($radio): array {
+  $PI = 3.1416;
+
+  $resultado[] = $circulo =  $PI * $radio ** 2;
+  $resultado[] = $circunferencia = 2 * $PI * $radio;
+
+  return $resultado;
+}
+
+function area_rectagulo2($base, $altura): ?float {
+  $area = 0;
+  $base < 0 || $altura < 0 ?
+    $area == null:    
+    $area = $base * $altura;
+
+  return $area;
+}
+
+function suma(){
+  $resultado = $a + $b;
+  return $resultado;
+}
+
+function contador_ejecuciones(){
+  static $numero_ejecuciones = 0;
+  ++$numero_ejecuciones;
+
+  echo "Número de ejecuciones: $numero_ejecuciones<br>";
+}
+
+function factorial($numero){
+  if ( $numero == 1) 
+    $factorial = 1; 
+  else if($numero == 2)
+      $factorial = 2;
+  else
+    $factorial = $numero * factorial($numero -1);
+  
+  return $factorial;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +130,39 @@ function area_triangulo2($base, $altura){
     $area = area_triangulo2($base, $altura);
     echo "El triángulo con base {$base} y altura {$altura} tiene como area {$area}<br>";
 
+    // Tipos de datos en los parámetros.
+    $area = area_rectangulo(3, 2);
+    echo "El área el rectángulo es $area<br>";
 
+    // Calculamos la media con ...args.
+    $media = media_aritmetica(6,8,7,9,3,2,5,6,4,7,6);
+    echo "La media aritmética del alumno es $media<br>";
+
+    // Devolución de más de un valor
+    $circulo_y_circunferencia = circulo_y_circunferencia(5);
+    echo "El área del círculo con radio 5 es {$circulo_y_circunferencia[0]} y la 
+    longitud de la circunferencia es {$circulo_y_circunferencia[1]}<br>";
+
+    // Devolución de un valor nulo.
+    $valor_nulo = area_rectagulo2(2, 9);
+    echo ($valor_nulo ? "El area es $valor_nulo" : "El valor del area del rectangulo es un valor nulo");
+
+    // Ámbito y visibilidad de las variables.
+    $a = 3;
+    $b = 8;
+    $resultado = suma();
+    echo "El valor de a es $a, el valor de b es $b y el resultado es $resultado -<br>";
+
+    contador_ejecuciones();
+    contador_ejecuciones();
+    contador_ejecuciones();
+    contador_ejecuciones();
+    contador_ejecuciones();
+
+    // Función recursiva.
+    $factor = factorial(8);
+    echo "El factorial de 8 es $factor<br>";
+    
 
   ?>
 </body>
