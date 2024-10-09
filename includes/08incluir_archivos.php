@@ -18,8 +18,11 @@
   
 */
   
+  $include_path_actual = ini_get("include_path");
+  $include_path_actual .= (":" . $_SERVER['DOCUMENT_ROOT'] . "/includes");
+  ini_set("include_path", $include_path_actual);
 
-  include("./funciones.php");
+  include("funciones.php");
 
   inicio_html("Inclusion de archivos", ['/styles/general.css']);
 
