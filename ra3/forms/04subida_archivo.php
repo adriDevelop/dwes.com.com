@@ -41,7 +41,7 @@ error_reporting(E_ALL);
 require_once(__DIR__ . '/../../includes/funciones.php');
 define("DIRECTORIO_PDF", $_SERVER['DOCUMENT_ROOT'] . "/archivos_cv");
 
-inicio_html("Subida de archivos", ['/styles/general.css', '/styles/forms.css']);
+inicio_html("Subida de archivos", ['./styles/general.css', ]);
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
   $dni = $_POST['dni'];
@@ -110,7 +110,7 @@ if (isset($_FILES['archivo_cv'])) {
   */
   if ($_FILES['archivo_cv']['error'] == UPLOAD_ERR_NO_FILE) {
     // No se ha subido el archivo
-    echo "<h3>ERROR. NO se ha subido el archivo</h3>";
+    echo "<h3>ERROR. No se ha subido el archivo</h3>";
   } else {
     /*
       3ª Comprobacion, Se comprueba que el archivo está dentro de los limites de tamaño establecidos
@@ -120,16 +120,55 @@ if (isset($_FILES['archivo_cv'])) {
       // el archivo excede lo indicado por la directiva upload_max_filesize
       echo "<h3>ERROR. El tamaño del archivo supera a upload_max_filesize</h3>";
     } else if ($_FILES['archivo_cv']['error'] == UPLOAD_ERR_FORM_SIZE) {
-      // El archivp excede lo indicado por MAX_FILE_SIZE
+      // El archivo excede lo indicado por MAX_FILE_SIZE
       echo "<h3>ERROR. El tamaño del archivo supera a MAX_FILE_SIZE</h3>";
+    } else if ($_FILES['archivo_cv']['size'] > $limite_pdf){
+      // El archivo ezcede lo indicado por el límite de usuario.
+      echo "<h3>Error. El tamaño del archivo supera a $limite_pdf </h3>";
+    } else {
+      /* 
+      5ª Comprobación. El tipo de archivo es el requerido.
+
+        - Si compro vamos directamente $_FILES['archivo_cv']['type'] == 'application/pdf' podemos añadir
+        alguna vulnerabilidad.
+
+        - Comprobar el tipo MIME del contenido del archivo.
+
+        - Como es posible que se admitan varios tipos de archivos, recomendable un array con los tipos admintivos.
+      */
+      $tipos_permitidos = ["application/pdf"];
+
+      $tipo_mime1 = mime_content_type($_FILES['archivo_cv']['tmp_name']);
+      $finfo = finfo_open(FILEINFO_MIME_TYPE); // Abre el fileinfo en modo tipo MIME.
+      $tipo_mime2 = finfo_file($finfo, $_FILES['archivo_cv']['tmp_name']);
+      $tipo_mime3 = $_FILES['archivo_cv']['type'];
+
+      if( $tipo_mime1 == $tipo_mime2 && $tipo_mime2 == $tipo_mime3 && 
+      in_array($tipo_mime1, $tipos_permitidos)){
+        // El tipo es el permitido.
+
+        // Se han pasado todas las comprobaciones.
+        // Se guarda el archivo.
+
+        $nombre_archivo = DIRECTORIO_PDF . "/" . $_FILES['archivo_cv']['name'];
+        if (move_uploaded_file($_FILES['archivo_cv']['tmp_name'], $nombre_archivo)){
+            echo "<h3>Archivo subido con éxito. Si qiuere puede subir más archivos</h3>";
+        }else{
+            echo "<h3>Error al guardar el archivo</h3>";
+        }
+      }
+
+
     }
+
+    
   }
   // if (empty($_FILES['archivo_cv']['name'])) {}
 } else {
   echo "<h3>Error. El formulario no contiene el campo archivo</h3>";
 }
 
-if ($_SERVER['REQUEST_METHOD'] == "GET") {
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
 ?>
   <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
     <input type="hidden" name="MAX_FILE_SIZE" id="MAX_VALUE_SIZE" value="<?= 1024 * 1024 ?>">
