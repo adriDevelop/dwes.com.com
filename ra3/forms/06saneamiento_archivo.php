@@ -6,7 +6,7 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 
-  require_once(__DIR__ . '/../../includes/funciones.php');
+  require_once($_SERVER . '/../../includes/funciones.php');
   define("DIRECTORIO_PDF", $_SERVER['DOCUMENT_ROOT'] . "/archivos_cv");
 
   inicio_html("Saneamiento y Validación de datos",
@@ -112,11 +112,85 @@
     Validacion de formato de datos
     ------------------------------
     */
-    $dni3 = filter_input(INPUT_POST, 'dni', );
 
+    // Por lo general las cadenas de texto genéricas se sanean.
+    $dni3 = filter_input(INPUT_POST, 'dni', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $nombre3 = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $comentarios3 = filter_input(INPUT_POST, 'comentarios', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $operacion3 = filter_input(INPUT_POST, 'operacion', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $nombre3 = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    // Validación de formato email.
     $email3 = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL, FILTER_NULL_ON_FAILURE);
-    $sucripcion3 = filter_input(INPUT_POST, 'suscripcion', FILTER_VALIDATE_BOOL);
+
+    // Validación de formato boolean.
+    $suscripcion3 = filter_input(INPUT_POST, 'suscripcion', FILTER_VALIDATE_BOOLEAN);
+    $clave3 = filter_input(INPUT_POST, 'clave', FILTER_DEFAULT);
+
+    // Validación de formato URL.
+    $sitio3 = filter_input(INPUT_POST, 'sitio', FILTER_VALIDATE_URL);
+
+    // Validación de formato gloat con rango incluido.
+    $peso3 = filter_input(INPUT_POST, 'peso', FILTER_VALIDATE_FLOAT, Array('options' => ['min_range' => 40, 'max_range' => 150],
+                                                                            'flags' => FILTER_NULL_ON_FAILURE));
+    $edad3 = filter_input(INPUT_POST, 'edad', FILTER_VALIDATE_INT, Array('options' => ['min_range' => 18, 'max_range' => 80],
+                                                                            'flags' => FILTER_NULL_ON_FAILURE));
     
+    
+    $patologias3 = filter_input(INPUT_POST, 'patologias_previas', FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);
+    
+    echo "El dni es $dni3<br>";
+    echo "El nombre es $nombre3<br>";
+    echo "El email es $email3<br>";
+    echo "La clave es $clave3<br>";
+    echo "La suscripcion es $suscripcion3<br>";
+    echo "El sitio es $sitio3<br>";
+    echo "El peso es $peso3<br>";
+    echo "La edad es $edad3<br>";
+    echo "Las patologias previas son ". implode(", " ,$patologias3) . "<br>";
+    echo "El comentario es $comentarios3<br>";
+
+    /*
+      Validación de datos con lógica de datos
+      ---------------------------------------
+    */
+
+    // Formato del DNI: 8 dígitos numéricos y una letra mayúscula.
+    $dni4 = filter_input(INPUT_POST, 'dni', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $exp_reg = "/[0-9]{7,8}[A-Z]/";
+    if (preg_match($exp_reg, $dni4)){
+      echo "Dni con formato correcto: $dni4<br>";
+    } else {
+      echo "El dni introducido no es válido.";
+    }
+
+    // Nombres de usuario solo con caracteres alfabéticos y dígitos numéricos.
+    // Con longitud mínima de 4 y máxima 8.
+    $nombre4 = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    if (ctype_alnum($nombre4) && strlen($nombre4) >= 4 && strlen($nombre4) <=8){
+      echo "Nombre con formato adecuado: $nombre4<br>";
+    }else {
+      echo "Nombre: NO tiene el formato adecuado<br>";
+    }
+
+    // Clave: Requisitos de complejidad.
+    // Tipos de caracteres: Letras mayñusculas, letras minúsculas, dígitos y símbolos gráficos.
+    // Longitud mínima: 6.
+
+    $clave4 = htmlspecialchars($_POST['clave']);
+    $letras_minusculas = preg_match("/[a-z]/", $clave);
+    $letras_mayusculas = preg_match("/[A-Z]/", $clave);
+    $letras_numericos = preg_match("/[0-9]/", $clave);
+    $letras_graficos = preg_match("/[,.\-;:_\+\*!\$%&\(\)]/", $clave);
+
+    if ($letras_minusculas && $letras_mayusculas && $letras_numericos && $letras_graficos){
+      echo "Cumple con los requisitos de la contraseña.";
+    } else {
+      echo "No cumple con los requisitos de complejidad.";
+    }
+
+
+
     
   } else {
     ?>
