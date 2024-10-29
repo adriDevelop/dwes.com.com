@@ -26,8 +26,7 @@ $array_compania = [
 ];
 
 $array_hotel = [
-
-  'miair' => Array('nombre' => 'MiAir', 'precio' => 0,),
+  'myair' => Array('nombre' => 'MyAir', 'precio' => 0,),
   'airfly' => Array('nombre' => 'AirFly', 'precio' => 50),
   'vuelaconmigo' => Array('nombre' => 'VuelaConmigo', 'precio' => 75),
   'apedalesair' => Array('nombre' => 'ApedalesAir', 'precio' => 150)
@@ -55,13 +54,13 @@ if ( $_SERVER['REQUEST_METHOD'] == "POST"){
   // Si hay Sticky form, se inicializan las variables con los datos del formulario
   // para inicializar los valores de los controles del formulario.
 
-  $responsable = filter_input(INPUT_POST, 'resonsable', FILTER_SANITIZE_SPECIAL_CHARS);
+  $responsable = filter_input(INPUT_POST, 'responsable', FILTER_SANITIZE_SPECIAL_CHARS);
 
   $telefono = filter_input(INPUT_POST, 'telefono', FILTER_SANITIZE_NUMBER_INT);
   $telefono = preg_match("/[0-9]{9}/", $telefono) == 0? "" : $telefono;
 
   $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-  $email = filter_validate($email, FILTER_VALIDATE_EMAIL);
+  $email = filter_var($email, FILTER_VALIDATE_EMAIL);
 
   $destino = filter_input(INPUT_POST, 'destino', FILTER_SANITIZE_SPECIAL_CHARS);
   $destino = array_key_exists($destino, $array_destinos) ? $destino : False;
@@ -69,7 +68,7 @@ if ( $_SERVER['REQUEST_METHOD'] == "POST"){
   $compania = filter_input(INPUT_POST, 'compania', FILTER_SANITIZE_SPECIAL_CHARS);
   $compania = array_key_exists($compania, $array_compania) ? $compania : False;
 
-  $hotel = filter_input(INPUT_POST, 'hotel', FILTER_SANITIZE_INT);
+  $hotel = filter_input(INPUT_POST, 'hotel', FILTER_SANITIZE_NUMBER_INT);
   $hotel = filter_var($hotel, FILTER_VALIDATE_INT, Array('min_range' => 3,
                                                        'max_range' => 5,
                                                        'default' => 3));
@@ -78,7 +77,7 @@ if ( $_SERVER['REQUEST_METHOD'] == "POST"){
 
   $desayuno = isset($_POST['desayuno']) && $_POST['desayuno'] == "On";
 
-  $num_personas = filter_input(INPUT_POST, 'personas', FILTER_SANITIZE_INT);
+  $num_personas = filter_input(INPUT_POST, 'personas', FILTER_SANITIZE_NUMBER_INT);
   $num_personas = filter_var($num_personas, FILTER_VALIDATE_INT, Array('min_range' => 5,
                                                        'max_range' => 10,
                                                        'default' => 5));
@@ -86,7 +85,7 @@ if ( $_SERVER['REQUEST_METHOD'] == "POST"){
   $dias = filter_input(INPUT_POST, 'dias', FILTER_SANITIZE_NUMBER_INT);
   $dias = $dias == 5 || $dias == 10 || $dias == 15 ? $dias : False;
   
-  $extras_recibido = filter_input(INPUT_POST, 'extras[]', FILTER_SANITIZE_SPECIAL_CHARS,
+  $extras_recibido = filter_input(INPUT_POST, 'extras', FILTER_SANITIZE_SPECIAL_CHARS,
                           FILTER_REQUIRE_ARRAY);
   $extras_ok = True;
   foreach ($extras_recibido as $clave => $valor){
@@ -96,17 +95,92 @@ if ( $_SERVER['REQUEST_METHOD'] == "POST"){
     }
   }
 
+  
+
   // Los datos se han recibido, saneado y validado.
   // Se genera el presupuesto.
+  
+  // Se inicia un buffer de salida.
+  ob_start();
 
+  // Datos personales.
+  echo "<h3>Datos para el presupuesto para las vacaciones</h3>";
+  echo "Persona responsable: $responsable <br>";
+  echo "Email: $email <br>";
+  echo "Teléfono de contacto:  $telefono <br>";
   $total = 0;
   if ( $destino ){
+    if ($destino && $num_personas && $dias)
+    echo "Destino {$array_destinos[$destino]['nombre']}<br>";
+    echo "Dias $dias<br>";
+    echo "Numero de personas $num_personas<br>";
+    $precio_destino = $array_destinos[$destino]['precio'] * intval($dias) * intval($num_personas);
+    echo "Precio por ir a {$array_destinos[$destino]['nombre']} para $num_personas personas y por $dias dias es $precio_destino €<br>";
+    $total += $precio_destino;
+  }
+  else {
+    ob_clean();
+    echo "<h3>Error. El destino, las personas o los días no son correctos</h3>";
+    // Enviar el formulario.
+    muestra_formulario();
+    fin_html();
+    ob_flush();
+    exit(1);
+  }
+
+  if ($compania && $num_personas){
+    echo "<h3>Suplementos y compañia aerea</h3>";
+    if ( strtoupper($compania) == 'MYAIR'){
+      echo "<p>Linea aerea {$array_compania[$compania]['nombre']}</p><br>";
+      echo "Sin sobrecoste por línea aérea<br>";
+    }
+    else {
+      echo "Linea aerea {$array_compania[$compania]['nombre']}<br>";
+      $precio_compania = $array_compania[$compania]['precio'];
+      $total_compania = $precio_compania * $num_personas;
+      echo "Suplemento por línea aérea: $total_compania €<br>";
+      $total += $total_compania;
+    }
+  }
+  else{
+    ob_clean();
+    echo "<h3>Error. La línea aerea o el número de personas es erróneo.</h3>";
+    muestra_formulario();
+    fin_html();
+    ob_flush();
+    exit(2);
+  }
+
+  if($hotel && $num_personas && $dias){
+    echo "<h3>Hotel seleccionado</h3>";
+    echo "<p>Hotel: $hotel *</p><br>";
+    $precio_hotel = $array_hotel[$hotel];
+    $total_hotel = $precio_hotel * intval($num_personas) * intval($dias);
+    if ($precio_hotel == 0){
+      echo "Sin sobrecoste por el hotel de $hotel";
+    }
+    else {
+      echo "Suplemento por hotel de $hotel *: $total_hotel";
+    }
+  }
+  else {
+    ob_clean();
+    echo "<h3>Error. La categoria de hotel o el numero de dias o personas es erroneo</h3>";
+    fin_html();
+    obs_flush();
+    exit(3);
+  }
+
+  // Subida del archivo.
+  if ( $_FILES['libro']['error'] == UPLOAD_ERR_OK){
     
   }
   
   // Esto nos lo podriamos ahorrar ya que saneandolo $telefono = filter_var($telefono, FILTER_VALIDATE_INT);
 }
 
+function muestra_formulario() {
+  global $array_destinos, $array_compania, $array_hotel;
 // Si es Sticky form el formulario viene aquí.
 ?>
 <header>Propuestas de viaje</header>
@@ -175,8 +249,11 @@ if ( $_SERVER['REQUEST_METHOD'] == "POST"){
     <input type="file" name="libro" id="libro">
 
   </fieldset>
+  <input type="submit" name="operacion" value="Calcular presupuesto">
 </form>
-
 <?php
+}
+muestra_formulario();
 fin_html();
+ob_flush();
 ?>
