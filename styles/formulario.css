@@ -1,17 +1,19 @@
-fieldset{
+fieldset {
   display: grid;
   grid-template-columns: 1fr 2fr;
 
+
   align-items: center;
+
   gap: 0.2em;
 }
 
-label{
-  justify-self: flex-end;
+label {
   color: darkblue;
+  justify-self: flex-end;
 }
 
-input {
+input, select, option, textarea  {
   padding: 0.2em;
   font: inherit;
 }

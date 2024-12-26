@@ -23,20 +23,5 @@
     </html>
     <?php
   }
-
-  function mostrar_error(Exception $e){?>
-
-    <h3>Error de la aplicacion</h3>
-    <p>Codigo de error <?=$e->getCode()?></p>
-    <p>Mensaje de error <?=$e->getMessage()?></p>
-    <p>Archivo del error <?=$e->getFile()?></p>
-    <p>Línea: <?=$e->getLine()?></p>
-    <?php
-
-    if (property_exists($e, "punto_recuperacion")){?>
-        <p>Puede ir a <a href="<?=$e->punto_recuperacion['url']?>"><?=$e->punto_recuperacion['enlace']?></a></p>
-    <?php
-    }
-  }
 ?>
 

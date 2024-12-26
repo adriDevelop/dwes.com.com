@@ -47,7 +47,7 @@ error_reporting(E_ALL);
   header("Last Modified: $caducidad");
   header("Cache-Control: no-store, no-cache, must-revalidate, private, max-age=0");
 
-  require_once($_SERVER['DOCUMENT_ROOT'] . "/adrian-dwes/dwes.com.com/includes/funciones.php");
+  require_once($_SERVER['DOCUMENT_ROOT'] . "/dwes.com.com/includes/funciones.php");
 
   inicio_html("Cache del navegador", ["/estilos/general.css"]);
 
