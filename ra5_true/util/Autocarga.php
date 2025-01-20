@@ -6,7 +6,7 @@ use Exception;
 class Autocarga {
     public static function registra_autocarga(){
         try{
-            spl_autoload(self::class . "::autocarga");
+            spl_autoload_register(self::class . "::autocarga");
         }catch(Exception $e){
             echo "La definición de la clase no se ha encontrado";
             exit(1);
@@ -14,15 +14,15 @@ class Autocarga {
     }
 
     public static function autocarga($clase) :void{
-        $directorios = ['/ra5', '/ra5_true'];
+        $directorios = ['/ra5_true', '/ra5/bbdd'];
 
-        $encontrado = false;
+        $encontrado = False;
 
         $clase = str_replace("\\", "/", $clase);
         foreach($directorios as $directorio){
-            if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/dwes.com.com." . $directorio . "/{$clase}.php")){
-                require_once($_SERVER['DOCUMENT_ROOT'] . "/dwes.com.com." . $directorio . "/{$clase}.php");
-                $encontrado = true;
+            if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/dwes.com.com" . $directorio . "/{$clase}.php")){
+                require_once($_SERVER['DOCUMENT_ROOT'] . "/dwes.com.com" . $directorio . "/{$clase}.php");
+                $encontrado = True;
                 break;
             }
         }

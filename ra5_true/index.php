@@ -7,6 +7,7 @@ use util\Autocarga;
 Autocarga::registra_autocarga();
 
 use mvc\controlador\Controlador;
+
 $controlador = new Controlador();
 $controlador->gestiona_peticion();
 ?>

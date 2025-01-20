@@ -1,6 +1,6 @@
 <?php
 
-namespace orm\mvc\modelo\orm;
+namespace mvc\modelo\orm;
 
 use Exception;
 use PDO;
@@ -24,12 +24,14 @@ class Mvc_Orm_LEnvio {
     }
 
     public function get_envios(string $nif): array{
-        $sql = "SELECT nenvio, npedido, nlinea, referencia, descripcion, unidades, precio, dto";
-        $sql.= " FROM nenvio inner join envio usin nenvio";
-        $sql.= " inner join lpedido using(npedido, nlinea)";
-        $sql.= " inner join articulo using(referencia)";
-        $sql.= " WHERE nif = :nif";
-        $sql.= " order by fecha desc";
+        $sql = "select nenvio, fecha, npedido, nlinea, referencia, ";
+        $sql.= "descripcion, lenvio.unidades, precio, dto ";
+        $sql.= "from lenvio inner join envio using(nenvio) ";
+        $sql.= "inner join lpedido using(npedido,nlinea) ";
+        $sql.= "inner join articulo using(referencia) ";
+        $sql.= "where nif = :nif ";
+        $sql.= "order by fecha desc";
+
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":nif", $nif);

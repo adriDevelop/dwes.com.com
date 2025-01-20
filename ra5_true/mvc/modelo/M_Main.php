@@ -2,7 +2,6 @@
 namespace mvc\modelo;
 use mvc\modelo\Modelo;
 use mvc\modelo\orm\Mvc_Orm_Articulos;
-use orm\modelo\ORMArticulo;
 
 class M_Main implements Modelo{
  public function despacha(): mixed
@@ -13,6 +12,7 @@ class M_Main implements Modelo{
     // Si el usuario se ha autenticado
     if ( !isset($_COOKIE['jwt'])){
         $this->sin_usuario_autenticado();
+        
     } 
     // Si no se ha autenticado
     else {

@@ -1,5 +1,5 @@
 <?php
-    namespace mvc\controlador;
+    namespace mvc\modelo\orm;
 
 use Cliente;
 use orm\Entidad\Cliente as EntidadCliente;

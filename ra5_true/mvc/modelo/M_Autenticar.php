@@ -1,12 +1,12 @@
 <?php
 namespace mvc\modelo;
 
-use Error;
 use Exception;
-use mvc\controlador\Mvc_Orm_Autenticar;
-use orm\mvc\modelo\orm\Mvc_Orm_LEnvio;
+use mvc\modelo\orm\Mvc_Orm_Autenticar;
+use mvc\modelo\orm\Mvc_Orm_LEnvio;
+use util\seguridad\Jwt;
 
-class Autenticar implements Modelo{
+class M_Autenticar implements Modelo{
     // Devuelve un array de datos
     public function despacha(): mixed
     {
@@ -20,7 +20,7 @@ class Autenticar implements Modelo{
     }
 
     public function sanear_y_validar(): array{
-        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $email = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_EMAIL);
         $clave = $_POST['clave'];
 
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
@@ -48,7 +48,9 @@ class Autenticar implements Modelo{
                     'email' => $cliente->email
                 ];
 
-                $jwt = generar_token($payload);
+                $jwt = JWT::generar_token($payload);
+
+                $_SESSION['cliente'] = $cliente;
 
                 $duracion_actual = ini_get("session.gc_maxlifetime()");
                 setcookie('jwt', $jwt, $duracion_actual, "/", "dwes.es", false, true);
